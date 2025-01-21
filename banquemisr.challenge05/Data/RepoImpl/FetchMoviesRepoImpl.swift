@@ -16,9 +16,9 @@ class FetchMoviesRepoImpl: FetchMoviesRepo {
     init(){}
     
     
-    func fetchMovies(in query: String) async throws -> [MoviesBaseModel] {
+    func fetchMovies(in query: MoviesListType) async throws -> [MoviesBaseModel] {
         // Build fetch url
-        guard let movieURL = Endpoint.shared.setEndpoint(with: query) else {return []}
+        guard let movieURL = Endpoint.shared.setEndpoint(with: query.rawValue) else {return []}
         
         // Fetch data
         let (data, response) = try await URLSession.shared.data(from: movieURL)

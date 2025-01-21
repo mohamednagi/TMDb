@@ -9,9 +9,7 @@ import Foundation
 
 struct Endpoint {
     static let shared = Endpoint()
-    // https://api.themoviedb.org/3/movie/now_playing
-    // https://api.themoviedb.org/3/movie/popular
-    // https://api.themoviedb.org/3/movie/upcoming
+    
     private var baseURL = URL(string: "https://api.themoviedb.org/3/movie")
     private init(){}
     
