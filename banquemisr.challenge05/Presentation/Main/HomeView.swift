@@ -12,8 +12,13 @@ struct HomeView: View {
     
     var body: some View {
         TabView {
-            
+            NowPlayingView()
+                .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                .tabItem {
+                    Label("Now Playing", systemImage: "film.fill")
+                }
         }
+        .preferredColorScheme(.dark)
     }
 }
 

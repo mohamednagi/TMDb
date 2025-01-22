@@ -11,17 +11,18 @@ protocol MoviesViewModelProtocol {
     func fetchMovies(with query: MoviesListType) async
 }
 
-@Observable
-class MoviesViewModelImpl: MoviesViewModelProtocol {
+
+class MoviesViewModelImpl: MoviesViewModelProtocol, ObservableObject {
     
-    var nowPlayingMovies = [MoviesBaseModel]()
-    var popularMovies = [MoviesBaseModel]()
-    var upComingMovies = [MoviesBaseModel]()
+    @Published var nowPlayingMovies = [ResultsEntity]()
+    var popularMovies = [ResultsEntity]()
+    var upComingMovies = [ResultsEntity]()
     
     private let moviesUseCase: FetchMoviesUseCaseProtocol
     
-    init(moviesUseCase: FetchMoviesUseCaseProtocol) {
+    init(moviesUseCase: FetchMoviesUseCaseImpl) {
         self.moviesUseCase = moviesUseCase
+        handleObservation(useCase: moviesUseCase)
     }
     
     private func handleObservation(useCase: FetchMoviesUseCaseImpl) {
@@ -42,7 +43,7 @@ class MoviesViewModelImpl: MoviesViewModelProtocol {
         useCase.upComingMovies.bind { movies in
             DispatchQueue.main.async {[weak self] in
                 guard let `self` = self else {return}
-                self.upComingMovies = movies
+                self.upComingMovies = movies 
             }
         }
     }

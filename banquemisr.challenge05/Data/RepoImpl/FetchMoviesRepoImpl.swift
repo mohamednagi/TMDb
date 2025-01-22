@@ -9,30 +9,31 @@ import Foundation
 
 class FetchMoviesRepoImpl: FetchMoviesRepo {
     
-    private enum FetchError: Error {
-        case badResponse
+    
+    private let network: Network
+    private let mapper: any MapperManager
+    
+    init(network: Network = NetworkImpl(), mapper: any MapperManager = MoviesMapper()) {
+        self.network = network
+        self.mapper = mapper
     }
     
-    init(){}
     
-    
-    func fetchMovies(in query: MoviesListType) async throws -> [MoviesBaseModel] {
-        // Build fetch url
-        guard let movieURL = Endpoint.shared.setEndpoint(with: query.rawValue) else {return []}
-        
-        // Fetch data
-        let (data, response) = try await URLSession.shared.data(from: movieURL)
-        
-        // Handle response
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw FetchError.badResponse
+    func fetchMovies(in query: MoviesListType) async -> Result<[Results],FetchErrorType> {
+        let result = await network.fetchMovies(in: query)
+        switch result {
+        case .success(let value):
+            return .success(map(dto: value).rootNode?.results ?? [])
+        case .failure(let error):
+            return .failure(error)
         }
-        
-        // Decode data
-        let movies = try JSONDecoder().decode([MoviesBaseModel].self, from: data)
-        
-        // Return quote
-        return movies
+    }
+    
+    private func map(dto: MoviesBaseModel) -> MoviesEntity {
+        if let entityMapper = mapper as? MoviesMapper {
+            return entityMapper.map(from: dto)
+        }
+        return MoviesEntity()
     }
     
     

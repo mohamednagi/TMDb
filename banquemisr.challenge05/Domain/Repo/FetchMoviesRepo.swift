@@ -8,5 +8,5 @@
 import Foundation
 
 protocol FetchMoviesRepo {
-    func fetchMovies(in query: MoviesListType) async throws -> [MoviesBaseModel]
+    func fetchMovies(in query: MoviesListType) async -> Result<[Results],FetchErrorType>
 }

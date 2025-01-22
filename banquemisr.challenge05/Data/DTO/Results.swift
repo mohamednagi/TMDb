@@ -12,7 +12,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Results : Codable {
+struct Results : Codable, Identifiable {
 	let adult : Bool?
 	let backdrop_path : String?
 	let genre_ids : [Int]?

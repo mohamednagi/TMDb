@@ -7,23 +7,24 @@
 
 import Foundation
 
-struct ResultsEntity {
+struct ResultsEntity: Identifiable {
     var rootNode: ResultsModel? = nil
+    var id = UUID()
 }
 
 struct ResultsModel {
-    let adult : Bool?
-    let backdrop_path : String?
-    let genre_ids : [Int]?
-    let id : Int?
-    let original_language : String?
-    let original_title : String?
-    let overview : String?
-    let popularity : Double?
-    let poster_path : String?
-    let release_date : String?
-    let title : String?
-    let video : Bool?
-    let vote_average : Double?
-    let vote_count : Int?
+    let adult : Bool
+    let backdropPath : String
+    let genreIds : [Int]
+    let id : Int
+    let originalLanguage : String
+    let originalTitle : String
+    let overview : String
+    let popularity : Double
+    let posterPath : String
+    let releaseDate : String
+    let title : String
+    let video : Bool
+    let voteAverage : Double
+    let voteCount : Int
 }

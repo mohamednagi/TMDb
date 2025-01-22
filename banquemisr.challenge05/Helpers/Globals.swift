@@ -12,3 +12,9 @@ enum MoviesListType: String {
     case popular
     case upcoming
 }
+
+enum FetchErrorType: Error {
+    case badURL
+    case badResponse
+    case noData
+}
