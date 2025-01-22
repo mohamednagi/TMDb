@@ -19,7 +19,7 @@ class ResultsMapper: MapperManager {
     
     private func createResultsModel(from dto: Results) -> ResultsModel {
         return ResultsModel(adult: dto.adult ?? false,
-                            backdropPath: dto.backdrop_path ?? "",
+                            backdropPath: Endpoint.shared.getImageEndpoint() + (dto.backdrop_path ?? ""),
                             genreIds: dto.genre_ids ?? [],
                             id: dto.id ?? -1,
                             originalLanguage: dto.original_language ?? "",

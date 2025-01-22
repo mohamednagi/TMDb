@@ -15,8 +15,8 @@ protocol MoviesViewModelProtocol {
 class MoviesViewModelImpl: MoviesViewModelProtocol, ObservableObject {
     
     @Published var nowPlayingMovies = [ResultsEntity]()
-    var popularMovies = [ResultsEntity]()
-    var upComingMovies = [ResultsEntity]()
+    @Published var popularMovies = [ResultsEntity]()
+    @Published var upComingMovies = [ResultsEntity]()
     
     private let moviesUseCase: FetchMoviesUseCaseProtocol
     

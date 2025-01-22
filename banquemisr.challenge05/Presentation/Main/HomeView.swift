@@ -11,17 +11,30 @@ import CoreData
 struct HomeView: View {
     
     var body: some View {
-        TabView {
-            NowPlayingView()
-                .toolbarBackgroundVisibility(.visible, for: .tabBar)
-                .tabItem {
-                    Label("Now Playing", systemImage: "film.fill")
-                }
+        NavigationStack {
+            TabView {
+                NowPlayingView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                    .tabItem {
+                        Label("Now Playing", systemImage: "film.fill")
+                    }
+                
+                PopularView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                    .tabItem {
+                        Label("Popular", systemImage: "star.fill")
+                    }
+                
+                UpcomingView()
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                    .tabItem {
+                        Label("Upcoming", systemImage: "calendar.circle")
+                    }
+            }
         }
-        .preferredColorScheme(.dark)
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

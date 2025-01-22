@@ -1,18 +1,18 @@
 //
-//  NowPlayingView.swift
+//  UpcomingView.swift
 //  banquemisr.challenge05
 //
-//  Created by Mohamed Nagi on 21/01/2025.
+//  Created by Mohamed Nagi on 22/01/2025.
 //
 
 import SwiftUI
 
-struct NowPlayingView: View {
+struct UpcomingView: View {
     @StateObject var vm = MoviesViewModelImpl(moviesUseCase: FetchMoviesUseCaseImpl())
     @State private var didFetchMovies = false
     
     var movies: [ResultsEntity] {
-        return vm.nowPlayingMovies
+        return vm.upComingMovies
     }
     
     var body: some View {
@@ -28,7 +28,7 @@ struct NowPlayingView: View {
             }
             .task(id: didFetchMovies) {
                 if !didFetchMovies {
-                    await vm.fetchMovies(with: .nowPlaying)
+                    await vm.fetchMovies(with: .upcoming)
                     didFetchMovies = true
                 }
             }
@@ -37,5 +37,6 @@ struct NowPlayingView: View {
 }
 
 //#Preview {
-//    NowPlayingView()
+//    UpcomingView()
 //}
+
