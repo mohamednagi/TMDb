@@ -17,4 +17,5 @@ enum FetchErrorType: Error {
     case badURL
     case badResponse
     case noData
+    case noNetwork
 }

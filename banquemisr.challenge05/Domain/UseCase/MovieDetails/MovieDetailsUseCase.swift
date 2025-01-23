@@ -12,8 +12,17 @@ protocol MovieDetailsUseCase {
 }
 
 class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
-    private let repo: MovieDetailsRepo
     
+    enum Status {
+        case notStarted
+        case fetching
+        case success
+        case failed(error: FetchErrorType)
+    }
+    
+    
+    private let repo: MovieDetailsRepo
+    var state: DynamicObjects<Status> = DynamicObjects(.notStarted)
     var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(MovieDetailsEntity())
     
     
@@ -22,12 +31,15 @@ class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
     }
     
     func fetchMovieDetails(for id: Int) async {
+        state.value = .fetching
         let result = await repo.fetchMovieDetails(for: id)
         switch result {
         case .success(let details):
             movieDetails.value = details
-        case .failure( _):
+            state.value = .success
+        case .failure(let error):
             movieDetails.value = .init()
+            state.value = .failed(error: error)
         }
     }
 }

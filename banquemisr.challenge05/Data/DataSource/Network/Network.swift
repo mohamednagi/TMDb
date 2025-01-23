@@ -17,8 +17,8 @@ class NetworkImpl: Network {
     private func getRequest(for url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
-          "accept": "application/json",
-          "Authorization": "Bearer \(Endpoint.shared.getAccessToken())"
+            "accept": "application/json",
+            "Authorization": "Bearer \(Endpoint.shared.getAccessToken())"
         ]
         return request
     }
