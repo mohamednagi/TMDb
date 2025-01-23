@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FetchMoviesRepoImpl: FetchMoviesRepo {
+class MoviesRepoImpl: MoviesRepo {
     
     
     private let network: Network

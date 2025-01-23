@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UpcomingView: View {
-    @StateObject var vm = MoviesViewModelImpl(moviesUseCase: FetchMoviesUseCaseImpl())
+    @StateObject var vm = MoviesViewModelImpl(moviesUseCase: MoviesUseCaseImpl())
     @State private var didFetchMovies = false
     
     var movies: [ResultsEntity] {
@@ -17,15 +17,7 @@ struct UpcomingView: View {
     
     var body: some View {
         NavigationStack {
-            List(movies) { movie in
-                NavigationLink {
-                    MovieDetailsView(movie: movie.rootNode)
-                } label: {
-                    MovieCell(posterPath: movie.rootNode?.posterPath ?? "",
-                              title: movie.rootNode?.title ?? "",
-                              releaseDate: movie.rootNode?.releaseDate ?? "")
-                }
-            }
+            MoviesList(movies: movies)
             .task(id: didFetchMovies) {
                 if !didFetchMovies {
                     await vm.fetchMovies(with: .upcoming)

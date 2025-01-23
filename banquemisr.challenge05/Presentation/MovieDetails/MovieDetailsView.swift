@@ -9,27 +9,31 @@ import SwiftUI
 
 struct MovieDetailsView: View {
     
-    var movie: ResultsModel?
+    @StateObject var vm = MovieDetailsViewModelImpl(movieDetailsUseCase: MovieDetailsUseCaseImpl())
+    var movieId: Int
+    var movieDetails: MovieDetailsEntity {
+        return vm.movieDetails
+    }
     
     var body: some View {
         GeometryReader { geo in
             ScrollView {
-                ZStack(alignment: .bottomTrailing) {
-                    AsyncImage(url: URL(string: movie?.backdropPath ?? "")) { image in
+                ZStack(alignment: .topTrailing) {
+                    AsyncImage(url: URL(string: movieDetails.rootNode.backdropPath)) { image in
                         image
                             .resizable()
                             .scaledToFit()
                     } placeholder: {
                         ProgressView()
                     }
-                        .overlay {
-                            LinearGradient(stops: [
-                                Gradient.Stop(color: .clear, location: 0.8),
-                                Gradient.Stop(color: .black, location: 1)
-                            ], startPoint: .top, endPoint: .bottom)
-                        }
+                    .overlay {
+                        LinearGradient(stops: [
+                            Gradient.Stop(color: .clear, location: 0.8),
+                            Gradient.Stop(color: .black, location: 1)
+                        ], startPoint: .top, endPoint: .bottom)
+                    }
                     
-                    AsyncImage(url: URL(string: movie?.posterPath ?? "")) { image in
+                    AsyncImage(url: URL(string: movieDetails.rootNode.posterPath)) { image in
                         image
                             .resizable()
                             .scaledToFit()
@@ -43,7 +47,7 @@ struct MovieDetailsView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Text(movie?.title ?? "")
+                    Text(movieDetails.rootNode.title)
                         .font(.largeTitle)
                     
                     Text("Is it for adults only?")
@@ -51,7 +55,7 @@ struct MovieDetailsView: View {
                         .padding(.top, 15)
                         .padding(.bottom, 5)
                     
-                    Text("\(movie?.adult ?? false ? "Yes" : "No")")
+                    Text("\(movieDetails.rootNode.adult ? "Yes" : "No")")
                     
                     
                     Text("Genre IDs")
@@ -59,8 +63,8 @@ struct MovieDetailsView: View {
                         .padding(.top, 15)
                         .padding(.bottom, 5)
                     
-                    ForEach(movie?.genreIds ?? [], id: \.self) { id in
-                        Text("•" + "\(id)")
+                    ForEach(movieDetails.rootNode.genres, id: \.self) { genre in
+                        Text("•" + "\(genre.name ?? "")")
                             .font(.subheadline)
                     }
                     
@@ -68,12 +72,14 @@ struct MovieDetailsView: View {
                         .font(.title2)
                         .padding(.vertical)
                     
-                    Text(movie?.overview ?? "")
+                    Text(movieDetails.rootNode.overview)
                 }
                 .padding()
                 .frame(width: geo.size.width, alignment: .leading)
             }
-            
+            .task {
+                await vm.fetchMovieDetails(for: movieId)
+            }
         }
         .ignoresSafeArea()
         .toolbarBackground(.hidden)
@@ -81,6 +87,6 @@ struct MovieDetailsView: View {
     }
 }
 
-//#Preview {
-//    MovieDetailsView(movie: ResultsModel(adult: false, backdropPath: "", genreIds: [], id: 0, originalLanguage: "", originalTitle: "", overview: "", popularity: 0, posterPath: "", releaseDate: "", title: "", video: false, voteAverage: 0, voteCount: 0))
-//}
+#Preview {
+    MovieDetailsView(vm: MovieDetailsViewModelImpl(movieDetailsUseCase: MovieDetailsUseCaseImpl()), movieId: 993710)
+}

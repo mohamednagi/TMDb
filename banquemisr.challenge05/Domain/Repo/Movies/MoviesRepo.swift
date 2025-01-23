@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol FetchMoviesRepo {
+protocol MoviesRepo {
     func fetchMovies(in query: MoviesListType) async -> Result<[Results],FetchErrorType>
 }

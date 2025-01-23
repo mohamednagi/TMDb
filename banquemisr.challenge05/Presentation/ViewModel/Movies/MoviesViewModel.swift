@@ -7,25 +7,25 @@
 
 import Foundation
 
-protocol MoviesViewModelProtocol {
+protocol MoviesViewModel {
     func fetchMovies(with query: MoviesListType) async
 }
 
 
-class MoviesViewModelImpl: MoviesViewModelProtocol, ObservableObject {
+class MoviesViewModelImpl: MoviesViewModel, ObservableObject {
     
     @Published var nowPlayingMovies = [ResultsEntity]()
     @Published var popularMovies = [ResultsEntity]()
     @Published var upComingMovies = [ResultsEntity]()
     
-    private let moviesUseCase: FetchMoviesUseCaseProtocol
+    private let moviesUseCase: MoviesUseCase
     
-    init(moviesUseCase: FetchMoviesUseCaseImpl) {
+    init(moviesUseCase: MoviesUseCaseImpl) {
         self.moviesUseCase = moviesUseCase
         handleObservation(useCase: moviesUseCase)
     }
     
-    private func handleObservation(useCase: FetchMoviesUseCaseImpl) {
+    private func handleObservation(useCase: MoviesUseCaseImpl) {
         useCase.nowPlayingMovies.bind { movies in
             DispatchQueue.main.async {[weak self] in
                 guard let `self` = self else {return}

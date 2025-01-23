@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol FetchMoviesUseCaseProtocol {
+protocol MoviesUseCase {
     func fetchMovies(in query: MoviesListType) async
 }
 
-class FetchMoviesUseCaseImpl: FetchMoviesUseCaseProtocol {
-    private let repo: FetchMoviesRepo
+class MoviesUseCaseImpl: MoviesUseCase {
+    private let repo: MoviesRepo
     
     var nowPlayingMovies: DynamicObjects<[ResultsEntity]> = DynamicObjects([])
     var popularMovies: DynamicObjects<[ResultsEntity]> = DynamicObjects([])
@@ -20,7 +20,7 @@ class FetchMoviesUseCaseImpl: FetchMoviesUseCaseProtocol {
     
     let mapper: any MapperManager
     
-    init(repo: FetchMoviesRepo = FetchMoviesRepoImpl(), mapper: any MapperManager = ResultsMapper()) {
+    init(repo: MoviesRepo = MoviesRepoImpl(), mapper: any MapperManager = ResultsMapper()) {
         self.repo = repo
         self.mapper = mapper
     }
