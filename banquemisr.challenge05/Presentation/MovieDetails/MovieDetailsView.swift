@@ -100,7 +100,7 @@ struct MovieDetailsView: View {
         
         .alert(isPresented: $vm.showAlert.0) {
           return Alert(
-            title: Text(vm.getErrorMsg(for: vm.showAlert.1)),
+            title: Text(vm.showAlert.1.rawValue),
             dismissButton: .default(Text("OK"))
           )
         }

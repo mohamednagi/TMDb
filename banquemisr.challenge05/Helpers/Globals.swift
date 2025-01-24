@@ -13,9 +13,16 @@ enum MoviesListType: String {
     case upcoming
 }
 
-enum FetchErrorType: Error {
-    case badURL
-    case badResponse
-    case noData
-    case noNetwork
+enum FetchErrorType: String, Error {
+    case badURL = "Bad URL"
+    case badResponse = "Bad response from server"
+    case noData = "No data found"
+    case noNetwork = "No network connection"
+}
+
+enum Status {
+    case notStarted
+    case fetching
+    case success
+    case failed(error: FetchErrorType)
 }

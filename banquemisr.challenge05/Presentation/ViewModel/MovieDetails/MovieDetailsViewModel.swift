@@ -10,14 +10,13 @@ import SwiftUI
 
 protocol MovieDetailsViewModel {
     func fetchMovieDetails(for id: Int) async
-    func getErrorMsg(for error: FetchErrorType) -> String
 }
 
 
 class MovieDetailsViewModelImpl: MovieDetailsViewModel, ObservableObject {
     
     @Published var movieDetails = MovieDetailsEntity()
-    @Published var state: MovieDetailsUseCaseImpl.Status = .notStarted
+    @Published var state: Status = .notStarted
     @Published var showAlert = (false,FetchErrorType.noData)
     
     private let movieDetailsUseCase: MovieDetailsUseCase
@@ -51,20 +50,4 @@ class MovieDetailsViewModelImpl: MovieDetailsViewModel, ObservableObject {
     func fetchMovieDetails(for id: Int) async {
         await movieDetailsUseCase.fetchMovieDetails(for: id)
     }
-    
-    func getErrorMsg(for error: FetchErrorType) -> String {
-        var errorMsg = ""
-        switch error {
-        case .badResponse:
-            errorMsg = "Bad response from server"
-        case .badURL:
-            errorMsg = "Bad URL"
-        case .noData:
-            errorMsg = "No data returned"
-        case .noNetwork:
-            errorMsg = "No network connection"
-        }
-        return errorMsg
-    }
-    
 }

@@ -17,6 +17,8 @@ class MoviesViewModelImpl: MoviesViewModel, ObservableObject {
     @Published var nowPlayingMovies = [ResultsEntity]()
     @Published var popularMovies = [ResultsEntity]()
     @Published var upComingMovies = [ResultsEntity]()
+    @Published var state: (MoviesListType,Status) = (.nowPlaying,.notStarted)
+    @Published var showAlert = (false,FetchErrorType.noData)
     
     private let moviesUseCase: MoviesUseCase
     
@@ -26,6 +28,19 @@ class MoviesViewModelImpl: MoviesViewModel, ObservableObject {
     }
     
     private func handleObservation(useCase: MoviesUseCaseImpl) {
+        useCase.state.bind { state in
+            DispatchQueue.main.async {[weak self] in
+                guard let `self` = self else {return}
+                self.state = state
+                switch state.1 {
+                case .failed(let error):
+                    showAlert = (true,error)
+                default:
+                    showAlert = (false,.noData)
+                }
+            }
+        }
+        
         useCase.nowPlayingMovies.bind { movies in
             DispatchQueue.main.async {[weak self] in
                 guard let `self` = self else {return}

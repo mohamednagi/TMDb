@@ -13,14 +13,6 @@ protocol MovieDetailsUseCase {
 
 class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
     
-    enum Status {
-        case notStarted
-        case fetching
-        case success
-        case failed(error: FetchErrorType)
-    }
-    
-    
     private let repo: MovieDetailsRepo
     var state: DynamicObjects<Status> = DynamicObjects(.notStarted)
     var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(MovieDetailsEntity())

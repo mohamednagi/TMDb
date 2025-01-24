@@ -24,6 +24,9 @@ class NetworkImpl: Network {
     }
     
     func fetchMovies(in query: MoviesListType) async -> Result<MoviesBaseModel,FetchErrorType> {
+        if !Reachability.isConnected() {
+            return Result.failure(.noNetwork)
+        }
         // Build fetch url
         guard let movieURL = Endpoint.shared.setEndpoint(with: query.rawValue) else {return Result.failure(FetchErrorType.badURL)}
         
@@ -47,6 +50,9 @@ class NetworkImpl: Network {
     }
     
     func fetchMovieDetails(with id: Int) async -> Result<MovieDetailsBaseModel,FetchErrorType> {
+        if !Reachability.isConnected() {
+            return Result.failure(.noNetwork)
+        }
         // Build fetch url
         guard let movieDetailsURL = Endpoint.shared.setEndpoint(with: "\(id)") else {return Result.failure(FetchErrorType.badURL)}
         

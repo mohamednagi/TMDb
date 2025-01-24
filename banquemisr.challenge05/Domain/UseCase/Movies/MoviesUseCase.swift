@@ -17,7 +17,7 @@ class MoviesUseCaseImpl: MoviesUseCase {
     var nowPlayingMovies: DynamicObjects<[ResultsEntity]> = DynamicObjects([])
     var popularMovies: DynamicObjects<[ResultsEntity]> = DynamicObjects([])
     var upComingMovies: DynamicObjects<[ResultsEntity]> = DynamicObjects([])
-    
+    var state: DynamicObjects<(MoviesListType,Status)> = DynamicObjects((.nowPlaying,.notStarted))
     let mapper: any MapperManager
     
     init(repo: MoviesRepo = MoviesRepoImpl(), mapper: any MapperManager = ResultsMapper()) {
@@ -26,6 +26,7 @@ class MoviesUseCaseImpl: MoviesUseCase {
     }
     
     func fetchMovies(in query: MoviesListType) async {
+        state.value = (query,.fetching)
         switch query {
         case .nowPlaying:
             let result = await repo.fetchMovies(in: .nowPlaying)
@@ -63,6 +64,7 @@ class MoviesUseCaseImpl: MoviesUseCase {
         case .upcoming:
             upComingMovies.value = map(dto: result)
         }
+        state.value = (query,.success)
     }
     
     private func handle(_ error: FetchErrorType, in query: MoviesListType) {
@@ -78,6 +80,7 @@ class MoviesUseCaseImpl: MoviesUseCase {
             }
         default: break
         }
+        state.value = (query,.failed(error: error))
     }
     
     private func map(dto: [Results]) -> [ResultsEntity] {
