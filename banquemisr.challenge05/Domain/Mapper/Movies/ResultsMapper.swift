@@ -19,10 +19,6 @@ class ResultsMapper: MapperManager {
     
     private func createResultsModel(from dto: Results) -> ResultsModel {
         return ResultsModel(id: dto.id ?? -1,
-                            adult: dto.adult ?? false,
-                            backdropPath: Endpoint.shared.getImageEndpoint() + (dto.backdrop_path ?? ""),
-                            genreIds: dto.genre_ids ?? [],
-                            overview: dto.overview ?? "",
                             posterPath: Endpoint.shared.getImageEndpoint() + (dto.poster_path ?? ""),
                             releaseDate: dto.release_date ?? "",
                             title: dto.title ?? "")

@@ -5,31 +5,24 @@
 //  Created by Mohamed Nagi on 24/01/2025.
 //
 
-import SystemConfiguration
+import Network
 
-public class Reachability {
-
-class func isConnected() -> Bool {
-
-    var noAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-    noAddress.sin_len = UInt8(MemoryLayout.size(ofValue: noAddress))
-    noAddress.sin_family = sa_family_t(AF_INET)
-
-    let defaultRouteReachability = withUnsafePointer(to: &noAddress) {
-        $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {noSockAddress in
-            SCNetworkReachabilityCreateWithAddress(nil, noSockAddress)
+class Reachability {
+    private let monitor = NWPathMonitor()
+    private let queue = DispatchQueue.global(qos: .background)
+    private var isReachable = false
+    static let shared = Reachability()
+    
+    private init() {
+        monitor.pathUpdateHandler = {[weak self] path in
+            guard let `self` = self else {return}
+            self.isReachable = path.status == .satisfied
         }
+        
+        monitor.start(queue: queue)
     }
-
-    var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
-    if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
-        return false
+    
+    func isReachableNow() -> Bool {
+        return isReachable
     }
-
-    let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-    let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-    let ret = (isReachable && !needsConnection)
-
-    return ret
-}
 }
