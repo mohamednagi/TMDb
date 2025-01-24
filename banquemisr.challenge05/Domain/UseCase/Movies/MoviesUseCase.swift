@@ -58,35 +58,32 @@ class MoviesUseCaseImpl: MoviesUseCase {
     private func handle(_ result: [Results], in query: MoviesListType) {
         switch query {
         case .nowPlaying:
-            nowPlayingMovies.value = map(dto: result)
+            nowPlayingMovies.value = map(query:query,dto: result)
         case .popular:
-            popularMovies.value = map(dto: result)
+            popularMovies.value = map(query:query,dto: result)
         case .upcoming:
-            upComingMovies.value = map(dto: result)
+            upComingMovies.value = map(query:query,dto: result)
         }
         state.value = (query,.success)
     }
     
     private func handle(_ error: FetchErrorType, in query: MoviesListType) {
-        switch error {
-        case .noData:
-            switch query {
-            case .nowPlaying:
-                nowPlayingMovies.value = []
-            case .popular:
-                popularMovies.value = []
-            case .upcoming:
-                upComingMovies.value = []
-            }
-        default: break
+        switch query {
+        case .nowPlaying:
+            nowPlayingMovies.value = []
+        case .popular:
+            popularMovies.value = []
+        case .upcoming:
+            upComingMovies.value = []
         }
         state.value = (query,.failed(error: error))
     }
     
-    private func map(dto: [Results]) -> [ResultsEntity] {
+    private func map(query: MoviesListType, dto: [Results]) -> [ResultsEntity] {
         return dto.compactMap { results in
             if let entityMapper = mapper as? ResultsMapper {
-                return entityMapper.map(from: results)
+                let entities = entityMapper.map(from: results)
+                return entities
             }else {
                 return nil
             }

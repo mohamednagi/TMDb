@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import Network
 
 @main
 struct banquemisr_challenge05App: App {
+    @StateObject private var monitor = Monitor.shared
+    
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .environmentObject(monitor)
                 .preferredColorScheme(.dark)
         }
     }

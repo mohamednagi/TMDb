@@ -27,7 +27,13 @@ struct NowPlayingView: View {
                 case .success:
                     MoviesList(movies: movies)
                 case .failed(_):
-                    EmptyView()
+                    Group {
+                        if movies.isEmpty {
+                            EmptyView()
+                        } else {
+                            MoviesList(movies: movies)
+                        }
+                    }
                 }
             }
         }
@@ -39,10 +45,10 @@ struct NowPlayingView: View {
             }
         }
         .alert(isPresented: $showAlert) {
-          return Alert(
-            title: Text(vm.showAlert.1.rawValue),
-            dismissButton: .default(Text("OK"))
-          )
+            return Alert(
+                title: Text(vm.showAlert.1.rawValue),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

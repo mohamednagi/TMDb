@@ -24,9 +24,15 @@ class MovieDetailsRepoImpl: MovieDetailsRepo {
         let result = await network.fetchMovieDetails(with: id)
         switch result {
         case .success(let value):
-            return .success(map(dto: value) )
+            let detailsEntity = map(dto: value)
+            UserDefaultsManager.shared.set(detailsEntity, forKey: .movieDetails(id))
+            return .success(detailsEntity)
         case .failure(let error):
-            return .failure(error)
+            if let details = UserDefaultsManager.shared.get(MovieDetailsEntity.self, forKey: .movieDetails(id)) {
+                return .success(details)
+            }else {
+                return .failure(error)
+            }
         }
     }
     
@@ -34,7 +40,7 @@ class MovieDetailsRepoImpl: MovieDetailsRepo {
         if let entityMapper = mapper as? MovieDetailsMapper {
             return entityMapper.map(from: dto)
         }
-        return MovieDetailsEntity()
+        return mockMovieDetail
     }
     
     

@@ -13,18 +13,19 @@ class MovieDetailsMapper: MapperManager {
     
     func map(from dto: DTO) -> Entity {
         let rootNode = createResultsModel(from: dto)
-        return Entity(rootNode: rootNode)
+        return rootNode
     }
     
-    private func createResultsModel(from dto: MovieDetailsBaseModel) -> MovieDetailsModel {
-        return MovieDetailsModel(id: dto.id ?? -1,
-                                 adult: dto.adult ?? false,
-                                 backdropPath: Endpoint.shared.getImageEndpoint() + (dto.backdrop_path ?? ""),
-                                 genres: dto.genres ?? [],
-                                 overview: dto.overview ?? "",
-                                 posterPath: Endpoint.shared.getImageEndpoint() + (dto.poster_path ?? ""),
-                                 releaseDate: dto.release_date ?? "",
-                                 title: dto.title ?? "")
+    private func createResultsModel(from dto: MovieDetailsBaseModel) -> MovieDetailsEntity {
+        
+        return MovieDetailsEntity(id: dto.id ?? -1,
+                                  adult: dto.adult ?? false,
+                                  backdropPath: Endpoint.shared.getImageEndpoint() + (dto.backdrop_path ?? ""),
+                                  genres: dto.genres ?? [],
+                                  overview: dto.overview ?? "",
+                                  posterPath: Endpoint.shared.getImageEndpoint() + (dto.poster_path ?? ""),
+                                  releaseDate: dto.release_date ?? "",
+                                  title: dto.title ?? "")        
     }
     
 }

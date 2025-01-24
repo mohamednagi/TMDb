@@ -15,7 +15,7 @@ class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
     
     private let repo: MovieDetailsRepo
     var state: DynamicObjects<Status> = DynamicObjects(.notStarted)
-    var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(MovieDetailsEntity())
+    var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(mockMovieDetail)
     
     
     init(repo: MovieDetailsRepo = MovieDetailsRepoImpl()) {
@@ -30,8 +30,14 @@ class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
             movieDetails.value = details
             state.value = .success
         case .failure(let error):
-            movieDetails.value = .init()
-            state.value = .failed(error: error)
+            if let details = UserDefaultsManager.shared.get(MovieDetailsEntity.self, forKey: .movieDetails(id)) {
+                movieDetails.value = details
+                state.value = .success
+            }else {
+                movieDetails.value = mockMovieDetail
+                state.value = .failed(error: error)
+            }
+            
         }
     }
 }

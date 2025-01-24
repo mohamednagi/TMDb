@@ -14,6 +14,7 @@ protocol Network {
 
 class NetworkImpl: Network {
     
+    
     private func getRequest(for url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
@@ -24,9 +25,11 @@ class NetworkImpl: Network {
     }
     
     func fetchMovies(in query: MoviesListType) async -> Result<MoviesBaseModel,FetchErrorType> {
-        if !Reachability.shared.isReachableNow() {
+        
+        if Monitor.shared.status == .disconnected {
             return Result.failure(.noNetwork)
         }
+        
         // Build fetch url
         guard let movieURL = Endpoint.shared.setEndpoint(with: query.rawValue) else {return Result.failure(FetchErrorType.badURL)}
         
@@ -50,9 +53,11 @@ class NetworkImpl: Network {
     }
     
     func fetchMovieDetails(with id: Int) async -> Result<MovieDetailsBaseModel,FetchErrorType> {
-        if !Reachability.shared.isReachableNow() {
+        
+        if Monitor.shared.status == .disconnected {
             return Result.failure(.noNetwork)
         }
+        
         // Build fetch url
         guard let movieDetailsURL = Endpoint.shared.setEndpoint(with: "\(id)") else {return Result.failure(FetchErrorType.badURL)}
         
@@ -71,7 +76,7 @@ class NetworkImpl: Network {
             // Return quote
             return Result.success(movieDetails)
         }catch {
-            return Result.failure(FetchErrorType.noData)
+            return Result.failure(FetchErrorType.noNetwork)
         }
     }
 }

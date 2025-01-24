@@ -23,9 +23,50 @@ class MoviesRepoImpl: MoviesRepo {
         let result = await network.fetchMovies(in: query)
         switch result {
         case .success(let value):
-            return .success(map(dto: value).rootNode?.results ?? [])
+            let results = map(dto: value).rootNode?.results ?? []
+            switch query {
+            case .nowPlaying:
+                UserDefaultsManager.shared.set(results, forKey: .nowPlaying)
+            case .popular:
+                UserDefaultsManager.shared.set(results, forKey: .popular)
+            case .upcoming:
+                UserDefaultsManager.shared.set(results, forKey: .upcoming)
+            }
+            return .success(results)
         case .failure(let error):
-            return .failure(error)
+            switch error {
+            case .noNetwork:
+                return cacheResult(for: query)
+            default:
+                return .failure(error)
+            }
+            
+        }
+    }
+    
+    private func cacheResult(for query: MoviesListType) -> Result<[Results],FetchErrorType> {
+        switch query {
+        case .nowPlaying:
+            if let results = UserDefaultsManager.shared.getArray(Results.self,
+                                                                 forKey: .nowPlaying) {
+                return .success(results)
+            }else {
+                return .failure(.noNetwork)
+            }
+        case .popular:
+            if let results = UserDefaultsManager.shared.getArray(Results.self,
+                                                                 forKey: .popular) {
+                return .success(results)
+            }else {
+                return .failure(.noNetwork)
+            }
+        case .upcoming:
+            if let results = UserDefaultsManager.shared.getArray(Results.self,
+                                                                 forKey: .upcoming) {
+                return .success(results)
+            }else {
+                return .failure(.noNetwork)
+            }
         }
     }
     

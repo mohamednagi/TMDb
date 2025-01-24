@@ -38,5 +38,7 @@ struct MovieCell: View {
 }
 
 #Preview {
-    MovieCell(posterPath: "", title: "test", releaseDate: "22-1-2025")
+    MovieCell(posterPath: "https://image.tmdb.org/t/p/w500/d8Ryb8AunYAuycVKDp5HpdWPKgC.jpg",
+              title: "test",
+              releaseDate: "22-1-2025")
 }

@@ -15,7 +15,7 @@ protocol MovieDetailsViewModel {
 
 class MovieDetailsViewModelImpl: MovieDetailsViewModel, ObservableObject {
     
-    @Published var movieDetails = MovieDetailsEntity()
+    @Published var movieDetails: MovieDetailsEntity?
     @Published var state: Status = .notStarted
     @Published var showAlert = (false,FetchErrorType.noData)
     

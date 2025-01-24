@@ -12,7 +12,8 @@ struct MovieDetailsView: View {
     @StateObject var vm = MovieDetailsViewModelImpl(movieDetailsUseCase: MovieDetailsUseCaseImpl())
     
     var movieId: Int
-    var movieDetails: MovieDetailsEntity {
+    var movieDetails: MovieDetailsEntity? {
+        UserDefaultsManager.shared.set(vm.movieDetails, forKey: .movieDetails(movieId))
         return vm.movieDetails
     }
     
@@ -26,7 +27,7 @@ struct MovieDetailsView: View {
             case .success:
                 ScrollView {
                     ZStack(alignment: .topTrailing) {
-                        AsyncImage(url: URL(string: movieDetails.rootNode.backdropPath)) { image in
+                        AsyncImage(url: URL(string: movieDetails?.backdropPath ?? "")) { image in
                             image
                                 .resizable()
                                 .scaledToFit()
@@ -40,7 +41,7 @@ struct MovieDetailsView: View {
                             ], startPoint: .top, endPoint: .bottom)
                         }
                         
-                        AsyncImage(url: URL(string: movieDetails.rootNode.posterPath)) { image in
+                        AsyncImage(url: URL(string: movieDetails?.posterPath ?? "")) { image in
                             image
                                 .resizable()
                                 .scaledToFit()
@@ -54,7 +55,7 @@ struct MovieDetailsView: View {
                     }
                     
                     VStack(alignment: .leading) {
-                        Text(movieDetails.rootNode.title)
+                        Text(movieDetails?.title ?? "")
                             .font(.largeTitle)
                         
                         Text("Is it for adults only?")
@@ -62,7 +63,7 @@ struct MovieDetailsView: View {
                             .padding(.top, 15)
                             .padding(.bottom, 5)
                         
-                        Text("\(movieDetails.rootNode.adult ? "Yes" : "No")")
+                        Text("\(movieDetails?.adult ?? false ? "Yes" : "No")")
                         
                         
                         Text("Genre IDs")
@@ -70,7 +71,7 @@ struct MovieDetailsView: View {
                             .padding(.top, 15)
                             .padding(.bottom, 5)
                         
-                        ForEach(movieDetails.rootNode.genres, id: \.self) { genre in
+                        ForEach(movieDetails?.genres ?? [], id: \.self) { genre in
                             Text("•" + "\(genre.name ?? "")")
                                 .font(.subheadline)
                         }
@@ -79,7 +80,7 @@ struct MovieDetailsView: View {
                             .font(.title2)
                             .padding(.vertical)
                         
-                        Text(movieDetails.rootNode.overview)
+                        Text(movieDetails?.overview ?? "")
                     }
                     .padding()
                     .frame(width: geo.size.width, alignment: .leading)

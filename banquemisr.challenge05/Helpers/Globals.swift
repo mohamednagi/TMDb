@@ -26,3 +26,8 @@ enum Status {
     case success
     case failed(error: FetchErrorType)
 }
+
+enum NetworkStatus: String {
+    case connected
+    case disconnected
+}
