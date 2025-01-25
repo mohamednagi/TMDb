@@ -8,6 +8,9 @@
 import Foundation
 
 protocol MoviesViewModel {
+    var nowPlayingMovies: [ResultsEntity] {get}
+    var popularMovies: [ResultsEntity] {get}
+    var upComingMovies: [ResultsEntity] {get}
     func fetchMovies(with query: MoviesListType) async
 }
 
@@ -22,12 +25,12 @@ class MoviesViewModelImpl: MoviesViewModel, ObservableObject {
     
     private let moviesUseCase: MoviesUseCase
     
-    init(moviesUseCase: MoviesUseCaseImpl) {
+    init(moviesUseCase: MoviesUseCase) {
         self.moviesUseCase = moviesUseCase
         handleObservation(useCase: moviesUseCase)
     }
     
-    private func handleObservation(useCase: MoviesUseCaseImpl) {
+    private func handleObservation(useCase: MoviesUseCase) {
         useCase.state.bind { state in
             DispatchQueue.main.async {[weak self] in
                 guard let `self` = self else {return}

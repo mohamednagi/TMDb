@@ -45,6 +45,23 @@ struct Results : Codable, Identifiable {
 		case vote_average = "vote_average"
 		case vote_count = "vote_count"
 	}
+    
+    init(id: Int, title: String, posterPath: String, releaseDate: String) {
+        self.adult = false
+        self.backdrop_path = ""
+        self.genre_ids = []
+        self.id = id
+        self.original_language = ""
+        self.original_title = ""
+        self.overview = ""
+        self.popularity = 0
+        self.poster_path = posterPath
+        self.release_date = releaseDate
+        self.title = title
+        self.video = false
+        self.vote_average = 0
+        self.vote_count = 0
+    }
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)

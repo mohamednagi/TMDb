@@ -8,6 +8,10 @@
 import Foundation
 
 protocol MoviesUseCase {
+    var state: DynamicObjects<(MoviesListType,Status)> { get }
+    var nowPlayingMovies: DynamicObjects<[ResultsEntity]> { get }
+    var popularMovies: DynamicObjects<[ResultsEntity]> { get }
+    var upComingMovies: DynamicObjects<[ResultsEntity]> { get }
     func fetchMovies(in query: MoviesListType) async
 }
 

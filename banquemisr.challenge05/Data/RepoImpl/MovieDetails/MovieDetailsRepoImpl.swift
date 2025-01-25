@@ -40,7 +40,7 @@ class MovieDetailsRepoImpl: MovieDetailsRepo {
         if let entityMapper = mapper as? MovieDetailsMapper {
             return entityMapper.map(from: dto)
         }
-        return mockMovieDetail
+        return MockData.shared.getMockedMovieDetails()
     }
     
     

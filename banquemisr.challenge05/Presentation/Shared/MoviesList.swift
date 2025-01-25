@@ -13,16 +13,16 @@ struct MoviesList: View {
     var body: some View {
         List(movies) { movie in
             NavigationLink {
-                MovieDetailsView(movieId: movie.rootNode.id)
+                MovieDetailsView(movieId: movie.id)
             } label: {
-                MovieCell(posterPath: movie.rootNode.posterPath,
-                          title: movie.rootNode.title,
-                          releaseDate: movie.rootNode.releaseDate)
+                MovieCell(posterPath: movie.posterPath,
+                          title: movie.title,
+                          releaseDate: movie.releaseDate)
             }
         }
     }
 }
 
 #Preview {
-//    MoviesList()
+    MoviesList(movies: MockData.shared.getMockedMoviesList())
 }

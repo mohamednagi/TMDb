@@ -20,7 +20,7 @@ enum FetchErrorType: String, Error {
     case noNetwork = "No network connection"
 }
 
-enum Status {
+enum Status: Equatable {
     case notStarted
     case fetching
     case success

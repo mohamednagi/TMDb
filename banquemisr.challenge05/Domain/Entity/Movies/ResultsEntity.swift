@@ -8,16 +8,9 @@
 import Foundation
 
 struct ResultsEntity: Identifiable {
-    var rootNode = ResultsModel(id: -1,
-                                posterPath: "",
-                                releaseDate: "",
-                                title: "")
-    var id = UUID()
-}
-
-struct ResultsModel {
     let id : Int
     let posterPath : String
     let releaseDate : String
     let title : String
 }
+

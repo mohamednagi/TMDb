@@ -8,6 +8,8 @@
 import Foundation
 
 protocol MovieDetailsUseCase {
+    var state: DynamicObjects<Status> { get }
+    var movieDetails: DynamicObjects<MovieDetailsEntity> { get }
     func fetchMovieDetails(for id: Int) async
 }
 
@@ -15,7 +17,7 @@ class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
     
     private let repo: MovieDetailsRepo
     var state: DynamicObjects<Status> = DynamicObjects(.notStarted)
-    var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(mockMovieDetail)
+    var movieDetails: DynamicObjects<MovieDetailsEntity> = DynamicObjects(MockData.shared.getMockedMovieDetails())
     
     
     init(repo: MovieDetailsRepo = MovieDetailsRepoImpl()) {
@@ -34,7 +36,7 @@ class MovieDetailsUseCaseImpl: MovieDetailsUseCase {
                 movieDetails.value = details
                 state.value = .success
             }else {
-                movieDetails.value = mockMovieDetail
+                movieDetails.value = MockData.shared.getMockedMovieDetails()
                 state.value = .failed(error: error)
             }
             

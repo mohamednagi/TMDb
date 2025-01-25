@@ -21,12 +21,12 @@ class MovieDetailsViewModelImpl: MovieDetailsViewModel, ObservableObject {
     
     private let movieDetailsUseCase: MovieDetailsUseCase
     
-    init(movieDetailsUseCase: MovieDetailsUseCaseImpl) {
+    init(movieDetailsUseCase: MovieDetailsUseCase) {
         self.movieDetailsUseCase = movieDetailsUseCase
         handleObservation(useCase: movieDetailsUseCase)
     }
     
-    private func handleObservation(useCase: MovieDetailsUseCaseImpl) {
+    private func handleObservation(useCase: MovieDetailsUseCase) {
         useCase.state.bind { state in
             DispatchQueue.main.async {[weak self] in
                 guard let `self` = self else {return}

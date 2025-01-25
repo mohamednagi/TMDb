@@ -7,15 +7,6 @@
 
 import Foundation
 
-let mockMovieDetail = MovieDetailsEntity(id: -1,
-                                        adult: false,
-                                        backdropPath: "",
-                                        genres: [],
-                                        overview: "",
-                                        posterPath: "",
-                                        releaseDate: "",
-                                        title: "")
-
 struct MovieDetailsEntity: Codable {
     
     let id : Int?
