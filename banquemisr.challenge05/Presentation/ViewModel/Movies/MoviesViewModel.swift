@@ -11,6 +11,7 @@ protocol MoviesViewModel {
     var nowPlayingMovies: [ResultsEntity] {get}
     var popularMovies: [ResultsEntity] {get}
     var upComingMovies: [ResultsEntity] {get}
+    
     func fetchMovies(with query: MoviesListType) async
 }
 

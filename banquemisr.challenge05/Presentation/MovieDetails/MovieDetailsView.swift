@@ -90,6 +90,6 @@ struct MovieDetailsView: View {
     }
 }
 
-//#Preview {
-//    MovieDetailsView(vm: MovieDetailsViewModelImpl(movieDetailsUseCase: MovieDetailsUseCaseImpl()), movieId: 993710)
-//}
+#Preview {
+    MovieDetailsView(vm: MovieDetailsViewModelImpl(movieDetailsUseCase: MovieDetailsUseCaseImpl()), movieId: 993710)
+}

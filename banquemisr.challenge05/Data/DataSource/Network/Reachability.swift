@@ -10,11 +10,14 @@ import SwiftUI
 
 
 class Monitor: ObservableObject {
+    
+    @Published var status: NetworkStatus = .connected
+
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "Monitor")
 
-    @Published var status: NetworkStatus = .connected
     static let shared = Monitor()
+    
     private init() {
         monitor.pathUpdateHandler = { [weak self] path in
             guard let self = self else { return }
@@ -23,12 +26,10 @@ class Monitor: ObservableObject {
             // on the main thread
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 if path.status == .satisfied {
-                    print("We're connected!")
                     self.status = .connected
                   
 
                 } else {
-                    print("No connection.")
                     self.status = .disconnected
                 }
             }

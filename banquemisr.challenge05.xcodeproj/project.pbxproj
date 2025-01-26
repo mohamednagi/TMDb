@@ -29,23 +29,9 @@
 		5127F96B2D3F624100338184 /* banquemisr.challenge05UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = banquemisr.challenge05UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		51CA2C042D436DFF007ED882 /* Exceptions for "banquemisr.challenge05" folder in "banquemisr.challenge05" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Data/DataSource/Local/LocalResultsEntity+CoreDataClass.swift",
-				"Data/DataSource/Local/LocalResultsEntity+CoreDataProperties.swift",
-			);
-			target = 5127F94B2D3F623F00338184 /* banquemisr.challenge05 */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5127F94E2D3F623F00338184 /* banquemisr.challenge05 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				51CA2C042D436DFF007ED882 /* Exceptions for "banquemisr.challenge05" folder in "banquemisr.challenge05" target */,
-			);
 			path = banquemisr.challenge05;
 			sourceTree = "<group>";
 		};
