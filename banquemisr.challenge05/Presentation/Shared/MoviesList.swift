@@ -15,9 +15,9 @@ struct MoviesList: View {
             NavigationLink {
                 MovieDetailsView(movieId: movie.id)
             } label: {
-                MovieCell(posterPath: movie.posterPath,
-                          title: movie.title,
-                          releaseDate: movie.releaseDate)
+                MovieCell(movieCellData: (posterPath: movie.posterPath,
+                                          title: movie.title,
+                                          releaseDate: movie.releaseDate))
             }
         }
     }

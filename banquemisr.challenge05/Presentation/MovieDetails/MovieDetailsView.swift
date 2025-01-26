@@ -27,27 +27,9 @@ struct MovieDetailsView: View {
             case .success:
                 ScrollView {
                     ZStack(alignment: .topTrailing) {
-                        AsyncImage(url: URL(string: movieDetails?.backdropPath ?? "")) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .overlay {
-                            LinearGradient(stops: [
-                                Gradient.Stop(color: .clear, location: 0.8),
-                                Gradient.Stop(color: .black, location: 1)
-                            ], startPoint: .top, endPoint: .bottom)
-                        }
                         
-                        AsyncImage(url: URL(string: movieDetails?.posterPath ?? "")) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            ProgressView()
-                        }
+                        AsyncImageView(imageURL: URL(string: movieDetails?.backdropPath ?? ""))
+                        AsyncImageView(imageURL: URL(string: movieDetails?.posterPath ?? ""))
                             .frame(width: geo.size.width/1.5, height: geo.size.height/3)
                             .offset(y: 20)
                             .scaleEffect(x: -1)

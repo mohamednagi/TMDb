@@ -66,35 +66,30 @@ class UserDefaultsManager {
         return try? decoder.decode([T].self, from: data)
     }
     
-    
-    // Function to save image to UserDefaults
-//    func saveImageToUserDefaults(image: UIImage, key: String) {
-//        guard let imageData = image.pngData() else {
-//            print("Failed to convert image to PNG data")
-//            return
-//        }
-//        
-//        // Debugging: Print the size of the image data to check for large image sizes
-//        print("Saving image data of size: \(imageData.count) bytes")
-//        DispatchQueue.main.async {
-//            UserDefaults.standard.set(imageData, forKey: key)
-//        }
-//        
-//    }
-    
-    // Function to load image from UserDefaults
-//    func loadImageFromUserDefaults(key: String) -> UIImage? {
-//        if let imageData = UserDefaults.standard.object(forKey: key) as? Data {
-//            print("Loaded image data of size: \(imageData.count) bytes") // Debugging size
-//            
-//            if let loadedImage = UIImage(data: imageData) {
-//                return loadedImage
-//            } else {
-//                print("Failed to convert data to UIImage")
-//            }
-//        } else {
-//            print("No image data found in UserDefaults")
-//        }
-//        return nil
-//    }
+    func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        let request = URLRequest(url: url)
+        
+        // Check if the image is already cached
+        if let cachedResponse = URLCache.shared.cachedResponse(for: request),
+           let image = UIImage(data: cachedResponse.data) {
+            completion(image)
+        }
+        
+        // If not cached, download the image
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, let response = response, error == nil,
+                  let image = UIImage(data: data) else {
+                completion(nil)
+                return
+            }
+            
+            // Cache the downloaded image
+            let cachedData = CachedURLResponse(response: response, data: data)
+            URLCache.shared.storeCachedResponse(cachedData, for: request)
+            
+            DispatchQueue.main.async {
+                completion(image)
+            }
+        }.resume()
+    }
 }

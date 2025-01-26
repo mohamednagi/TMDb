@@ -9,28 +9,20 @@ import SwiftUI
 
 struct MovieCell: View {
     
-    var posterPath,title,releaseDate: String
-    
+    var movieCellData: (posterPath: String, title: String, releaseDate: String)
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: posterPath)) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 100, height: 100)
-            .shadow(color: .white, radius: 1)
-            
+            AsyncImageView(imageURL: URL(string: movieCellData.posterPath))
+                .frame(width: 100, height: 100)
+                .shadow(color: .white, radius: 1)
             
             VStack(alignment: .leading) {
-                Text(title)
+                Text(movieCellData.title)
                     .font(.title3)
                     .fontWeight(.semibold)
                 
-                Text(releaseDate)
+                Text(movieCellData.releaseDate)
                     .fontWeight(.regular)
             }
         }
@@ -38,7 +30,9 @@ struct MovieCell: View {
 }
 
 #Preview {
-    MovieCell(posterPath: "https://image.tmdb.org/t/p/w500/d8Ryb8AunYAuycVKDp5HpdWPKgC.jpg",
-              title: "test",
-              releaseDate: "22-1-2025")
+    MovieCell(movieCellData: (posterPath: "https://image.tmdb.org/t/p/w500/d8Ryb8AunYAuycVKDp5HpdWPKgC.jpg",
+                              title: "test",
+                              releaseDate: "22-1-2025"))
+    
+    
 }
